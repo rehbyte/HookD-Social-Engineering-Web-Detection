@@ -3,7 +3,9 @@ from functools import wraps
 import os
 import re
 from werkzeug.utils import secure_filename
-from supabase import Client
+from dotenv import load_dotenv
+
+load_dotenv()  # read .env if present (local dev)
 
 # --- CUSTOM MODULE IMPORTS ---
 from ml_engine.backend_scanner import scan_logic 
@@ -12,16 +14,18 @@ from utils.security_filter import check_file_extension
 from utils.email_parser import parse_eml_file, check_header_spoofing, extract_sender_domain
 from utils.dns_verifier import verify_email_authenticity, analyze_sender_domain
 
-# DATABASE IMPORTS
-from database import log_scan, create_user_profile, get_user_profile, get_scan_history, delete_scan_log
+# DATABASE IMPORTS (local SQLite)
+from database import log_scan, create_user, authenticate_user, get_user_profile, get_scan_history, delete_scan_log
 
 app = Flask(__name__)
-app.secret_key = 'supersecretkey'
+app.secret_key = os.environ.get('SECRET_KEY', 'dev-only-insecure-key')
 
-# --- SUPABASE CONFIG ---
-SUPABASE_URL = "https://sutccxmhqstoatpublqp.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1dGNjeG1ocXN0b2F0cHVibHFwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2ODQ5MTgxNywiZXhwIjoyMDg0MDY3ODE3fQ.4iei3BHbae-kdHPV1sUoZY7NKzniZj4H8OrJeYoeg7E"
-supabase = Client(SUPABASE_URL, SUPABASE_KEY)
+# --- DEMO / GUEST MODE ---
+# When True, login is skipped and a shared guest account is used.
+# Default OFF since the exhibit uses real local accounts; set DEV_MODE=1 for
+# an instant no-login guest demo.
+DEV_MODE = os.environ.get('DEV_MODE', '0') != '0'
+DEV_USER = {'id': 'local-guest', 'email': 'guest@localhost', 'name': 'Guest'}
 
 # --- UPLOAD CONFIG ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -33,6 +37,8 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
+        if DEV_MODE and 'user' not in session:
+            session['user'] = DEV_USER  # auto-login for local testing
         if 'user' not in session:
             flash("Please log in first.", "warning")
             return redirect(url_for('login'))
@@ -50,23 +56,18 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        
-        try:
-            response = supabase.auth.sign_in_with_password({"email": email, "password": password})
-            user_id = response.user.id
-            profile = get_user_profile(user_id)
-            display_name = profile.get('display_name') if profile else email.split('@')[0]
 
+        user = authenticate_user(email, password)
+        if user:
             session['user'] = {
-                'id': user_id,
-                'email': response.user.email,
-                'name': display_name
+                'id': user['id'],
+                'email': user['email'],
+                'name': user['display_name'] or (email.split('@')[0] if email else 'User')
             }
             return redirect(url_for('dashboard'))
-            
-        except Exception as e:
-            flash(f"Login failed: {str(e)}", "danger")
-    
+        else:
+            flash("Invalid email or password.", "danger")
+
     return render_template('login.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -76,17 +77,13 @@ def signup():
         password = request.form.get('password')
         first_name = request.form.get('first_name')
         last_name = request.form.get('last_name')
-        display_name = f"{first_name} {last_name}".strip()
+        user, error = create_user(email, password, first_name, last_name)
+        if user:
+            flash("Account created! Please log in.", "success")
+            return redirect(url_for('login'))
+        else:
+            flash(error or "Signup failed.", "danger")
 
-        try:
-            response = supabase.auth.sign_up({"email": email, "password": password})
-            if response.user:
-                create_user_profile(response.user.id, first_name, last_name, display_name)
-                flash("Account created! Please log in.", "success")
-                return redirect(url_for('login'))
-        except Exception as e:
-            flash(f"Signup failed: {str(e)}", "danger")
-            
     return render_template('signup.html')
 
 @app.route('/logout')
@@ -220,4 +217,7 @@ def scan_image():
         return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Local run only. In production, gunicorn imports `app` and ignores this block.
+    debug = os.environ.get('FLASK_DEBUG', '0') == '1'
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=debug)

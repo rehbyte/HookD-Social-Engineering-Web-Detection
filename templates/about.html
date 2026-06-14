@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>About | Astra</title>
+    <title>HookD | About</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/favicon.svg') }}">
     <style>
         /* --- COPYING STYLE FROM PROFILE PAGE --- */
         :root {
@@ -28,7 +29,7 @@
             font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 12px;
             color: white; text-decoration: none;
         }
-        .brand-icon { width: 20px; height: 20px; background-color: var(--astra-green); border-radius: 4px; }
+        .brand-icon { width: 26px; height: 26px; background: url("{{ url_for('static', filename='img/logo.svg') }}") no-repeat center / contain; }
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.95rem; transition: 0.2s; }
         .nav-links a:hover { color: var(--astra-green); }
