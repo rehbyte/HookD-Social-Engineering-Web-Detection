@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HookD | Phishing Detection</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/favicon.svg') }}">
+    <link href="{{ url_for('static', filename='vendor/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/theme.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
         /* Smooth scroll behavior for the anchor link */
@@ -30,8 +31,14 @@
             </a>
             
             <div class="d-flex gap-3 align-items-center ms-auto">
-                <a href="{{ url_for('login') }}" class="btn btn-login-ghost px-4">Login</a>
-                <a href="{{ url_for('signup') }}" class="btn btn-primary-astra rounded-pill px-4">Sign up</a>
+                {% if user %}
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-login-ghost px-4">Scanner</a>
+                    <a href="{{ url_for('history') }}" class="btn btn-login-ghost px-4">History</a>
+                    <a href="{{ url_for('profile') }}" class="btn btn-primary-astra rounded-pill px-4">{{ user.name }}</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="btn btn-login-ghost px-4">Login</a>
+                    <a href="{{ url_for('signup') }}" class="btn btn-primary-astra rounded-pill px-4">Sign up</a>
+                {% endif %}
             </div>
         </div>
     </nav>
@@ -46,7 +53,7 @@
                 <div class="d-flex justify-content-center gap-3">
                     <a href="#phishing-stats" class="btn btn-outline-light rounded-pill btn-lg px-5 btn-glass">Learn More ></a>
                     
-                    <a href="{{ url_for('login') }}" class="btn btn-primary-astra rounded-pill btn-lg px-5 d-flex align-items-center justify-content-center">Get Started</a>
+                    <a href="{{ url_for('dashboard') if user else url_for('login') }}" class="btn btn-primary-astra rounded-pill btn-lg px-5 d-flex align-items-center justify-content-center">Get Started</a>
                 </div>
                 <div class="scroll-arrow mt-5 opacity-50">
                     <i data-lucide="chevron-down"></i>
@@ -91,7 +98,7 @@
         </section>
     </main>
 
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="{{ url_for('static', filename='vendor/lucide.min.js') }}"></script>
     <script>lucide.createIcons();</script>
 </body>
 </html>
