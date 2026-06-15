@@ -90,7 +90,7 @@ body {
 
 .form-subheader {
     font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--text-muted);
     letter-spacing: 1px;
     text-transform: uppercase;
     border-bottom: 1px solid rgba(255,255,255,0.1);
@@ -113,8 +113,9 @@ body {
     border-radius: 12px;
     padding: 12px 18px;
     font-size: 1rem;
-    transition: 0.3s ease;
+    transition: border-color var(--dur) var(--ease-out), background-color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
 }
+.account-input::placeholder { color: var(--placeholder); }
 
 /* Highlight input when editable */
 .account-input:not([readonly]) {
@@ -136,16 +137,17 @@ body {
     border-radius: 50px;
     padding: 14px;
     font-weight: 700;
-    transition: 0.3s;
     width: 100%;
     text-transform: uppercase;
     letter-spacing: 1px;
+    transition: background-color var(--dur) var(--ease-out), transform var(--dur-fast) var(--ease-out), box-shadow var(--dur) var(--ease-out);
 }
 .btn-save:hover {
     background-color: #a8e65a;
     transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(193, 255, 114, 0.3);
+    box-shadow: 0 8px 24px rgba(193, 255, 114, 0.28);
 }
+.btn-save:active { transform: scale(0.98); }
 
 .btn-logout {
     background: transparent;
@@ -156,10 +158,11 @@ body {
     font-weight: 600;
     text-decoration: none;
     display: block;
-    transition: 0.3s;
+    transition: background-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out), transform var(--dur-fast) var(--ease-out);
     width: 100%;
 }
 .btn-logout:hover {
     background-color: #ef4444;
     color: white;
 }
+.btn-logout:active { transform: scale(0.98); }

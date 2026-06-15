@@ -1,0 +1,137 @@
+/* ============================================================
+   HookD — Design Foundation
+   Self-hosted fonts, design tokens, motion curves, a11y.
+   Load this FIRST on every page, before page-specific CSS.
+   Works fully offline (no CDN / Google Fonts dependency).
+   ============================================================ */
+
+/* ---------- Fonts (self-hosted woff2, offline) ---------- */
+@font-face { font-family:'Space Grotesk'; font-style:normal; font-weight:400; font-display:swap; src:url('../fonts/space-grotesk-400.woff2') format('woff2'); }
+@font-face { font-family:'Space Grotesk'; font-style:normal; font-weight:500; font-display:swap; src:url('../fonts/space-grotesk-500.woff2') format('woff2'); }
+@font-face { font-family:'Space Grotesk'; font-style:normal; font-weight:600; font-display:swap; src:url('../fonts/space-grotesk-600.woff2') format('woff2'); }
+@font-face { font-family:'Space Grotesk'; font-style:normal; font-weight:700; font-display:swap; src:url('../fonts/space-grotesk-700.woff2') format('woff2'); }
+
+@font-face { font-family:'JetBrains Mono'; font-style:normal; font-weight:400; font-display:swap; src:url('../fonts/jetbrains-mono-400.woff2') format('woff2'); }
+@font-face { font-family:'JetBrains Mono'; font-style:normal; font-weight:500; font-display:swap; src:url('../fonts/jetbrains-mono-500.woff2') format('woff2'); }
+@font-face { font-family:'JetBrains Mono'; font-style:normal; font-weight:700; font-display:swap; src:url('../fonts/jetbrains-mono-700.woff2') format('woff2'); }
+
+@font-face { font-family:'Inter'; font-style:normal; font-weight:400; font-display:swap; src:url('../fonts/inter-400.woff2') format('woff2'); }
+@font-face { font-family:'Inter'; font-style:normal; font-weight:500; font-display:swap; src:url('../fonts/inter-500.woff2') format('woff2'); }
+@font-face { font-family:'Inter'; font-style:normal; font-weight:600; font-display:swap; src:url('../fonts/inter-600.woff2') format('woff2'); }
+@font-face { font-family:'Inter'; font-style:normal; font-weight:700; font-display:swap; src:url('../fonts/inter-700.woff2') format('woff2'); }
+@font-face { font-family:'Inter'; font-style:normal; font-weight:800; font-display:swap; src:url('../fonts/inter-800.woff2') format('woff2'); }
+
+/* ---------- Design tokens ---------- */
+:root {
+    /* Brand */
+    --astra-green:      #c1ff72;
+    --astra-green-soft: #a8e65a;
+    --astra-green-12:   rgba(193, 255, 114, 0.12);
+    --astra-green-30:   rgba(193, 255, 114, 0.30);
+
+    /* Surfaces (one cohesive dark-green ramp) */
+    --bg-dark:    #020d08;
+    --bg-glow:    #0a2d1a;
+    --surface:    #0a140f;
+    --surface-2:  #0e1b14;
+    --card-bg:    rgba(255, 255, 255, 0.03);
+    --border-soft:rgba(255, 255, 255, 0.10);
+
+    /* Text — contrast-checked against the dark ramp (>= WCAG AA) */
+    --text:        #f2f7f3;
+    --text-muted:  #aeb8b1;   /* replaces the old opacity .5/.6 grays */
+    --text-faint:  #8a948d;   /* large text / decorative only */
+    --placeholder: #8e988f;
+
+    /* Status */
+    --status-safe:    #3ddc84;
+    --status-caution: #f1c40f;
+    --status-unsafe:  #ff5c5c;
+
+    /* Type families */
+    --font-display: 'Space Grotesk', system-ui, sans-serif;
+    --font-body:    'Inter', system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, 'Courier New', monospace;
+
+    /* Motion — strong custom curves (built-in easings are too weak) */
+    --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+    --dur-fast: 130ms;
+    --dur:      200ms;
+    --dur-slow: 320ms;
+
+    /* Radius scale */
+    --r-sm: 8px;
+    --r-md: 14px;
+    --r-lg: 20px;
+    --r-pill: 999px;
+
+    /* Z-index scale (semantic, no magic 9999) */
+    --z-sticky: 1000;
+    --z-dropdown: 1100;
+    --z-modal: 2000;
+    --z-toast: 3000;
+}
+
+/* ---------- Base typography ---------- */
+body {
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5,
+.display-1, .display-2, .display-3, .display-4,
+.navbar-brand, .stat-title, .status-label, .profile-heading {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+}
+
+/* Tabular monospace for any number that should line up / read as data */
+.num, .font-mono, .confidence-text, .stat-card h3 {
+    font-family: var(--font-mono);
+    font-feature-settings: "tnum" 1;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Nicer heading line-breaks where supported */
+h1, h2, h3 { text-wrap: balance; }
+
+::selection { background: var(--astra-green); color: #04120a; }
+
+/* ---------- Buttons: universal press feedback ---------- */
+.btn, button, [type="submit"] {
+    transition: transform var(--dur-fast) var(--ease-out),
+                background-color var(--dur) var(--ease-out),
+                border-color var(--dur) var(--ease-out),
+                box-shadow var(--dur) var(--ease-out),
+                color var(--dur) var(--ease-out);
+}
+.btn:active, button:active, [type="submit"]:active {
+    transform: scale(0.97);
+}
+
+/* ---------- Accessible focus ring ---------- */
+:focus-visible {
+    outline: 2px solid var(--astra-green);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+/* Don't show the ring for mouse clicks on buttons that already react */
+.btn:focus:not(:focus-visible) { outline: none; box-shadow: none; }
+
+/* ---------- Custom scrollbar (subtle, on-brand) ---------- */
+* { scrollbar-width: thin; scrollbar-color: var(--astra-green-30) transparent; }
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb { background: var(--astra-green-30); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+*::-webkit-scrollbar-thumb:hover { background: rgba(193, 255, 114, 0.5); }
+
+/* ---------- Reduced motion (mandatory a11y) ---------- */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

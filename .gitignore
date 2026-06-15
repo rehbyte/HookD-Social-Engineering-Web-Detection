@@ -1,0 +1,13 @@
+# Local SQLite database (generated at runtime)
+hookd.db
+
+# Python
+__pycache__/
+*.pyc
+
+# Uploaded scan images
+static/uploads/
+
+# Editor / IDE temp files
+tempCodeRunnerFile.py
+.vscode/

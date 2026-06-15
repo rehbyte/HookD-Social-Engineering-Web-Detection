@@ -109,7 +109,7 @@ body {
     border: 1px solid rgba(193, 255, 114, 0.3) !important; 
     border-bottom: none !important; border-radius: 12px 12px 0 0;
     padding: 12px 30px; margin-right: 5px; font-weight: 600;
-    transition: all 0.2s ease;
+    transition: background var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
 }
 .scanner-nav-tabs .nav-link.active { background: var(--astra-green) !important; color: #000 !important; }
 
@@ -122,14 +122,16 @@ body {
     color: white !important; font-size: 1.6rem; padding: 40px;
     width: 100%; flex-grow: 1; resize: none; outline: none; word-break: break-all;
 }
-.scanner-field::placeholder { color: rgba(255, 255, 255, 0.3); }
+.scanner-field::placeholder { color: var(--placeholder); }
 
 /* --- Buttons --- */
 .btn-scan, .btn-upload {
     border: 1px solid var(--astra-green) !important; color: white !important;
-    background: transparent; font-weight: 700; transition: 0.3s;
+    background: transparent; font-weight: 700;
+    transition: background var(--dur) var(--ease-out), color var(--dur) var(--ease-out), transform var(--dur-fast) var(--ease-out), box-shadow var(--dur) var(--ease-out);
 }
-.btn-scan:hover, .btn-upload:hover { background: var(--astra-green) !important; color: #000 !important; }
+.btn-scan:hover, .btn-upload:hover { background: var(--astra-green) !important; color: #000 !important; box-shadow: 0 8px 24px rgba(193, 255, 114, 0.25); }
+.btn-scan:active, .btn-upload:active { transform: scale(0.97); }
 
 /* --- Image Upload Frame --- */
 .upload-frame { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; }

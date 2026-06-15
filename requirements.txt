@@ -1,0 +1,16 @@
+# HookD - Python dependencies
+# Install with:  pip install -r requirements.txt
+#
+# NOTE: pytesseract also requires the Tesseract OCR engine to be installed
+# on the system (https://github.com/UB-Mannheim/tesseract/wiki for Windows).
+
+Flask>=3.0
+scikit-learn>=1.3
+numpy>=1.24
+pandas>=2.0
+joblib>=1.3
+opencv-python>=4.8
+pytesseract>=0.3.10
+dnspython>=2.4
+
+# Database is now local SQLite (Python standard library) -- no Supabase needed.
