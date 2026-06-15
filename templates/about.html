@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HookD | About</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/favicon.svg') }}">
     <link href="{{ url_for('static', filename='vendor/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/theme.css') }}" rel="stylesheet">
     <style>
@@ -13,7 +14,7 @@
             color: var(--text);
             min-height: 100vh;
         }
-        .logo-icon { width: 20px; height: 20px; background: var(--astra-green); border-radius: 4px; display: inline-block; }
+        .logo-icon { width: 26px; height: 26px; background: url("{{ url_for('static', filename='img/logo.svg') }}") no-repeat center / contain; display: inline-block; }
         .nav-link { color: var(--text-muted); transition: color var(--dur) var(--ease-out); }
         .nav-link:hover, .nav-link.active { color: var(--astra-green); }
 
