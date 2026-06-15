@@ -15,8 +15,8 @@
     "fn": 13,
     "tp": 87
   },
-  "ocr_accuracy": null,
-  "ocr_count": 0,
+  "ocr_accuracy": 70.8,
+  "ocr_count": 15,
   "clarity": 82.0,
   "baselines": {
     "HookD pipeline": {
