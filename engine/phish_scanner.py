@@ -556,7 +556,7 @@ def scan_logic(body, sender=None):
     """
     Adapter used by the Flask web app.
 
-    Picks the analysis mode from the sender, runs the OLD BACKEND engine
+    Picks the analysis mode from the sender, runs the engine
     (full_security_scan), and always returns a dict shaped like:
         {label, confidence, css, message, details}
     Detail lines are stripped of emoji for clean display in the web UI.

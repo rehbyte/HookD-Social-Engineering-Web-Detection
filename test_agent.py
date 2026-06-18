@@ -9,8 +9,8 @@ from collections import Counter
 import Levenshtein
 from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score, confusion_matrix
 
-# Evaluate the engine the app actually uses (OLD BACKEND), not ml_engine.
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "OLD BACKEND"))
+# Evaluate the engine the app actually uses (the "engine" folder).
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "engine"))
 from phish_scanner import scan_logic
 from utils.ocr import run_ocr
 

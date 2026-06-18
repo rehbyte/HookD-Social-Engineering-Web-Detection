@@ -30,7 +30,7 @@ stored locally with PBKDF2-hashed passwords.
 
 ## Get the code (Git LFS required!)
 
-The trained model (`OLD BACKEND/Phish_Model_Advanced.pkl`) is stored with
+The trained model (`engine/Phish_Model_Advanced.pkl`) is stored with
 **Git LFS**. Install it first, or you'll only get a placeholder file and the
 model won't load.
 

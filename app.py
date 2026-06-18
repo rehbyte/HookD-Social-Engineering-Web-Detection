@@ -10,9 +10,9 @@ from dotenv import load_dotenv
 load_dotenv()  # read .env if present (local dev / exhibit config)
 
 # --- SCANNING BACKEND ---
-# The phishing engine now lives in the "OLD BACKEND" folder. Its folder name
-# contains a space, so we add it to sys.path and import the module directly.
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "OLD BACKEND"))
+# The phishing engine lives in the "engine" folder. We add it to sys.path and
+# import the module directly.
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "engine"))
 from phish_scanner import scan_logic
 
 # --- CUSTOM MODULE IMPORTS ---
